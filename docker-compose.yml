@@ -1,0 +1,54 @@
+version: "3.1"
+
+services:
+  web:
+    container_name: "Time-attendance-management-app"
+    hostname: "Time-attendance-management-app"
+    build:
+      context: "./docker/php"
+    ports:
+      - "127.0.0.1:80:80"
+    volumes:
+      - "./root:/var/www/root"
+      # - "./root/vendor:/var/www/root/vendor:delegated"
+      # - "./root/storage:/var/www/root/storage:delegated"
+      # - "web_data_volume:/var/www/root/bootstrap/cache"
+      # - "web_data_volume:/var/www/root/storage/debugbar"
+      # - "web_data_volume:/var/www/root/storage/framework/sessions"
+      # - "web_data_volume:/var/www/root/storage/framework/views"
+    environment:
+      - "TZ=Asia/Tokyo"
+    working_dir: /var/www/root
+    restart: always
+  db:
+    platform: linux/x86_64 # M1チップ対応
+    container_name: "Time-attendance-management-app-mysql"
+    hostname: Time-attendance-management-app-db-host
+    image: mysql:8.0.36
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+        - "mysql_data_volume:/var/lib/mysql" # volumes -> mysql_data_volume
+        - "./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf"
+        - "./docker/db/sql:/docker-entrypoint-initdb.d"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root"
+      - "TZ=Asia/Tokyo"
+    restart: always
+  phpmyadmin:
+    container_name: "Time-attendance-management-app-phpmyadmin"
+    hostname: "Time-attendance-management-app-phpmyadmin"
+    image: phpmyadmin:5.2.1
+    ports:
+      - "127.0.0.1:8888:80"
+    environment:
+      - "PMA_HOST=Time-attendance-management-app-db-host" # db -> hostname
+      - "PMA_USER=root"
+      - "PMA_PASSWORD=root" # db -> environment -> MYSQL_ROOT_PASSWORD
+      - "TZ=Asia/Tokyo"
+    restart: always
+volumes:
+  web_data_volume:
+    name: "Time-attendance-management-app-volume"
+  mysql_data_volume:
+    name: "Time-attendance-management-app-mysql-volume"
