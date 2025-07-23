@@ -18,9 +18,15 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'employee_id',
         'name',
         'email',
         'password',
+        'department_id',
+        'role_id',
+        'is_admin',
+        'hire_date',
+        'is_active',
     ];
 
     /**
@@ -43,6 +49,21 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'hire_date' => 'date',
+            'is_admin' => 'boolean',
+            'is_active' => 'boolean',
         ];
+    }
+
+    public function department()
+    {
+        // ユーザーは1つの部署に属する
+        return $this->belongsTo(Department::class);
+    }
+
+    public function role()
+    {
+        // ユーザーは1つの役職に属する
+        return $this->belongsTo(Role::class);
     }
 }
