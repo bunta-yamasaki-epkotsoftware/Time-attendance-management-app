@@ -3,6 +3,7 @@
 .env
 .env.backup
 .env.production
+# .env.dev は共有用なので除外しない
 .phpactor.json
 .phpunit.result.cache
 /.fleet
