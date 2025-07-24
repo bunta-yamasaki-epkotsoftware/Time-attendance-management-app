@@ -36,10 +36,10 @@ class AttendanceSeeder extends Seeder
                 return [
                     'user_id' => $users->random()->id,
                     'work_date' => $workDate->format('Y-m-d'),
-                    'clock_in' => $clockIn->format('Y-m-d H:i:s'),
-                    'clock_out' => $clockOut->format('Y-m-d H:i:s'),
-                    'break_start' => $breakStart->format('Y-m-d H:i:s'),
-                    'break_end' => $breakEnd->format('Y-m-d H:i:s'),
+                    'clock_in' => $clockIn->format('H:i'),
+                    'clock_out' => $clockOut->format('H:i'),
+                    'break_start' => $breakStart->format('H:i'),
+                    'break_end' => $breakEnd->format('H:i'),
                     'total_work_hours' => $totalWorkHours,
                     'total_break_hours' => 1.00, // 1時間固定
                     'status' => fake()->randomElement(['working', 'completed', 'absent']),
