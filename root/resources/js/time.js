@@ -46,3 +46,11 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('clockout-notes').value = document.getElementById('attendance-memo').value;
     });
 });
+
+// 閉じるボタンの機能
+function closeMessage(messageId) {
+    document.getElementById(messageId).style.display = 'none';
+}
+
+// グローバル公開
+window.closeMessage = closeMessage;

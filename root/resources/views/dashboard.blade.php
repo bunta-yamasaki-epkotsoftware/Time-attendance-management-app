@@ -20,6 +20,27 @@
         </div>
     </div>
 
+    <!-- //エラーメッセージ・成功メッセージ -->
+    @if(session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" id="error-message" role="alert">
+            <strong class="font-bold">エラー:</strong>
+            <span class="block sm:inline">{{ session('error') }}</span>
+            <!-- ×ボタンを追加 -->
+            <button type="submit" class="absolute top-0 right-0 px-4 py-3" onclick="closeMessage('error-message')">
+                ×
+            </button>
+        </div>
+    @elseif(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" id="success-message" role="alert">
+            <strong class="font-bold">成功:</strong>
+            <span class="block sm:inline">{{ session('success') }}</span>
+            <!-- ×ボタンを追加 -->
+            <button type="button" class="absolute top-0 right-0 px-4 py-3" onclick="closeMessage('success-message')">
+                ×
+            </button>
+        </div>
+    @endif
+
     <!-- 出勤・退勤表示 -->
     <div class="bg-gradient-to-b from-green-400 to-green-500 py-8">
         <div class="flex flex-col items-center space-y-4">
@@ -41,6 +62,29 @@
                     <input type="hidden" name="notes_out" id="clockout-notes">
                     <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-12 rounded-lg text-xl shadow-lg">
                         退勤
+                    </button>
+                </form>
+            </div>
+
+    <!-- 休憩・戻り表示 -->
+    <div class="bg-gradient-to-b from-green-400 to-green-500">
+        <div class="flex flex-col items-center space-y-4">
+
+            <!-- 休憩・戻りボタン -->
+            <div class="flex space-x-4">
+                <form method="POST" action="{{route('attendance.breakStart')}}" class="attendance-form" id="break_start-form">
+                    @csrf
+                    <input type="hidden" name="type" value="break_start">
+                    <button type="submit" class="bg-violet-500 hover:bg-violet-600 text-white font-bold py-4 px-12 rounded-lg text-xl shadow-lg">
+                        休憩
+                    </button>
+                </form>
+
+                <form method="POST" action="{{route('attendance.breakEnd')}}" class="attendance-form" id="break_end-form">
+                    @csrf
+                    <input type="hidden" name="type" value="break_end">
+                    <button type="submit" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-4 px-12 rounded-lg text-xl shadow-lg">
+                        戻り
                     </button>
                 </form>
             </div>
@@ -67,14 +111,6 @@
                     </thead>
                     <tbody>
                         @foreach ($requests as $request)
-                        <tr class="hover:bg-gray-50">
-                            <!-- <td class="px-4 py-3 border-b text-gray-600">{{$request->work_date}}</td> -->
-                            <td class="px-4 py-3 border-b text-gray-600">{{$request->clock_in}}</td>
-                            <td class="px-4 py-3 border-b">
-                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">出勤</span>
-                            </td>
-                            <td class="px-4 py-3 border-b text-gray-600">{{$request->notes_in}}</td>
-                        </tr>
                         @if(!empty($request->clock_out))
                         <tr class="hover:bg-gray-50">
                             <!-- <td class="px-4 py-3 border-b text-gray-600">{{$request->work_date}}</td> -->
@@ -85,6 +121,32 @@
                             <td class="px-4 py-3 border-b text-gray-600">{{$request->notes_out}}</td>
                         </tr>
                         @endif
+                        @if(!empty($request->break_end))
+                        <tr class="hover:bg-gray-50">
+                            <!-- <td class="px-4 py-3 border-b text-gray-600">{{$request->work_date}}</td> -->
+                            <td class="px-4 py-3 border-b text-gray-600">{{$request->break_end}}</td>
+                            <td class="px-4 py-3 border-b">
+                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm">戻り</span>
+                            </td>
+                        </tr>
+                        @endif
+                        @if(!empty($request->break_start))
+                        <tr class="hover:bg-gray-50">
+                            <!-- <td class="px-4 py-3 border-b text-gray-600">{{$request->work_date}}</td> -->
+                            <td class="px-4 py-3 border-b text-gray-600">{{$request->break_start}}</td>
+                            <td class="px-4 py-3 border-b">
+                                <span class="bg-violet-100 text-violet-800 px-2 py-1 rounded-full text-sm">休憩</span>
+                            </td>
+                        </tr>
+                        @endif
+                        <tr class="hover:bg-gray-50">
+                            <!-- <td class="px-4 py-3 border-b text-gray-600">{{$request->work_date}}</td> -->
+                            <td class="px-4 py-3 border-b text-gray-600">{{$request->clock_in}}</td>
+                            <td class="px-4 py-3 border-b">
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">出勤</span>
+                            </td>
+                            <td class="px-4 py-3 border-b text-gray-600">{{$request->notes_in}}</td>
+                        </tr>
                         @endforeach
                     </tbody>
                     <!-- ページネーションリンク -->
