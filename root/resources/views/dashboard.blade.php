@@ -104,7 +104,8 @@
                 <table class="w-full text-left">
                     <thead>
                         <tr class="bg-gray-50">
-                            <th class="px-4 py-3 border-b font-semibold text-gray-700">日時・時間</th>
+                            <th class="px-4 py-3 border-b font-semibold text-gray-700">日時</th>
+                            <th class="px-4 py-3 border-b font-semibold text-gray-700">時間</th>
                             <th class="px-4 py-3 border-b font-semibold text-gray-700">打刻</th>
                             <th class="px-4 py-3 border-b font-semibold text-gray-700">メモ</th>
                         </tr>
@@ -113,8 +114,8 @@
                         @foreach ($requests as $request)
                         @if(!empty($request->clock_out))
                         <tr class="hover:bg-gray-50">
-                            <!-- <td class="px-4 py-3 border-b text-gray-600">{{$request->work_date}}</td> -->
-                            <td class="px-4 py-3 border-b text-gray-600">{{$request->clock_out}}</td>
+                            <td class="px-4 py-3 border-b text-gray-600">{{$request->work_date->format('Y-m-d')}}</td>
+                            <td class="px-4 py-3 border-b text-gray-600">{{substr($request->clock_out, 0, 5)}}</td>
                             <td class="px-4 py-3 border-b">
                                 <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full text-sm">退勤</span>
                             </td>
@@ -123,8 +124,8 @@
                         @endif
                         @if(!empty($request->break_end))
                         <tr class="hover:bg-gray-50">
-                            <!-- <td class="px-4 py-3 border-b text-gray-600">{{$request->work_date}}</td> -->
-                            <td class="px-4 py-3 border-b text-gray-600">{{$request->break_end}}</td>
+                            <td class="px-4 py-3 border-b text-gray-600">{{$request->work_date->format('Y-m-d')}}</td>
+                            <td class="px-4 py-3 border-b text-gray-600">{{substr($request->break_end, 0, 5)}}</td>
                             <td class="px-4 py-3 border-b">
                                 <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-sm">戻り</span>
                             </td>
@@ -132,16 +133,16 @@
                         @endif
                         @if(!empty($request->break_start))
                         <tr class="hover:bg-gray-50">
-                            <!-- <td class="px-4 py-3 border-b text-gray-600">{{$request->work_date}}</td> -->
-                            <td class="px-4 py-3 border-b text-gray-600">{{$request->break_start}}</td>
+                            <td class="px-4 py-3 border-b text-gray-600">{{$request->work_date->format('Y-m-d')}}</td>
+                            <td class="px-4 py-3 border-b text-gray-600">{{substr($request->break_start, 0, 5)}}</td>
                             <td class="px-4 py-3 border-b">
                                 <span class="bg-violet-100 text-violet-800 px-2 py-1 rounded-full text-sm">休憩</span>
                             </td>
                         </tr>
                         @endif
                         <tr class="hover:bg-gray-50">
-                            <!-- <td class="px-4 py-3 border-b text-gray-600">{{$request->work_date}}</td> -->
-                            <td class="px-4 py-3 border-b text-gray-600">{{$request->clock_in}}</td>
+                            <td class="px-4 py-3 border-b text-gray-600">{{$request->work_date->format('Y-m-d')}}</td>
+                            <td class="px-4 py-3 border-b text-gray-600">{{substr($request->clock_in, 0, 5)}}</td>
                             <td class="px-4 py-3 border-b">
                                 <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm">出勤</span>
                             </td>

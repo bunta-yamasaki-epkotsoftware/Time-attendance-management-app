@@ -8,7 +8,7 @@
             </a>
 
             <!-- 勤務表 -->
-            <a href="#" class="flex flex-col items-center py-2 px-1 sm:px-3 rounded-lg text-gray-500 hover:text-blue-600 transition-colors">
+            <a href="{{route('workschedules.index')}}" class="flex flex-col items-center py-2 px-1 sm:px-3 rounded-lg text-gray-500 hover:text-blue-600 transition-colors">
                 <div class="text-lg sm:text-2xl mb-1">📋</div>
                 <span class="text-xs font-medium">勤務表</span>
             </a>

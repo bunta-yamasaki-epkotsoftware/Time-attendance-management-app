@@ -36,10 +36,10 @@ class Attendance extends Model
     {
         return [
             'work_date' => 'date',
-            'clock_in' => 'datetime',
-            'clock_out' => 'datetime',
-            'break_start' => 'datetime',
-            'break_end' => 'datetime',
+            'clock_in' => 'string',
+            'clock_out' => 'string',
+            'break_start' => 'string',
+            'break_end' => 'string',
             'approved_at' => 'datetime',
             'total_work_hours' => 'decimal:2',
             'total_break_hours' => 'decimal:2',
