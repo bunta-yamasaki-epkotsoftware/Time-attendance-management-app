@@ -23,7 +23,7 @@ class AttendanceController extends Controller
         // 現在ログインしているユーザーの勤怠データのみ取得
         $requests = Attendance::where('user_id', Auth::id())
                               ->orderBy('work_date', 'desc') // 最新の勤怠データを上に表示
-                              ->paginate(10); // ページネーションを追加
+                              ->paginate(3); // ページネーションを追加
                             //   ->get(); //ページネーションの際は不要
 
         return view('dashboard', compact('requests'));
@@ -41,8 +41,6 @@ class AttendanceController extends Controller
         if($todayAttendance) {
             return redirect()->route('dashboard')->with('error', '今日の勤怠はすでに登録されています。');
         }
-
-        // dd($request->input('notes'));
 
         //出勤登録（退勤はnullで初期化）
         $attendance = new Attendance();
@@ -88,6 +86,48 @@ class AttendanceController extends Controller
         // Log::debug('clockOut: 退勤登録完了', ['attendance' => $attendance]);
 
         return redirect()->route('dashboard')->with('success', '退勤が登録されました。');
+    }
+
+    public function breakStart(Request $request)
+    {
+        // 今日の勤怠記録を取得
+        $attendance = Attendance::where('user_id', Auth::id())
+            ->whereDate('work_date', Carbon::today())
+            ->first();
+
+        if(!$attendance) {
+            return redirect()->route('dashboard')->with('error', '出勤記録がありません。');
+        }
+
+        if($attendance->clock_out) {
+            return redirect()->route('dashboard')->with('error', '今日の退勤はすでに登録されています。');
+        }
+
+        $attendance->break_start = Carbon::now()->format('Y-m-d H:i:s');
+        $attendance->save();
+
+        return redirect()->route('dashboard')->with('success', '休憩が登録されました。');
+    }
+
+    public function breakEnd(Request $request)
+    {
+        // 今日の勤怠記録を取得
+        $attendance = Attendance::where('user_id', Auth::id())
+            ->whereDate('work_date', Carbon::today())
+            ->first();
+
+        if(!$attendance) {
+            return redirect()->route('dashboard')->with('error', '出勤記録がありません。');
+        }
+
+        if($attendance->clock_out) {
+            return redirect()->route('dashboard')->with('error', '今日の退勤はすでに登録されています。');
+        }
+
+        $attendance->break_end = Carbon::now()->format('Y-m-d H:i:s');
+        $attendance->save();
+
+        return redirect()->route('dashboard')->with('success', '戻りが登録されました。');
     }
 
     /**
