@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController; // Import AttendanceController
 use App\Http\Controllers\SettingController; // Import SeetingsController
 use App\Http\Controllers\WorkScheduleController; // Import WorkScheduleController
+use App\Http\Controllers\WorkSummaryController; // Import WorkSummaryController
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,6 +21,12 @@ Route::post('/dashboard/break-end', [AttendanceController::class, 'breakEnd'])->
 
 //勤務表管理のルート
 Route::get('/workschedule',[WorkScheduleController::class, 'index'])->middleware(['auth', 'verified'])->name('workschedules.index'); // 勤務表の表示
+// Route::get('/workschedule/{id}', [WorkScheduleController::class, 'show'])->middleware(['auth', 'verified'])->name('workschedules.show'); // 勤務表の詳細表示
+Route::get('/workschedule/{id}/edit', [WorkScheduleController::class, 'edit'])->middleware(['auth', 'verified'])->name('workschedules.edit'); // 勤務表の編集
+Route::put('/workschedule/{id}', [WorkScheduleController::class, 'update'])->middleware(['auth', 'verified'])->name('workschedules.update'); // 勤務表の更新
+
+//勤務集計管理のルート
+Route::get('/worksummary', [WorkSummaryController::class, 'index'])->middleware(['auth', 'verified'])->name('worksummarys.index'); // 勤務表の詳細表示
 
 // 設定管理のルート
 Route::get('/settings', [SettingController::class, 'index'])->middleware(['auth', 'verified'])->name('settings.index'); // 設定ページの表示

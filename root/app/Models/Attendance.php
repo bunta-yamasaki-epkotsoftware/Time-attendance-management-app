@@ -24,7 +24,8 @@ class Attendance extends Model
         'status',
         'location_lat',
         'location_lng',
-        'notes',
+        'notes_in',
+        'notes_out',
     ];
 
     /**

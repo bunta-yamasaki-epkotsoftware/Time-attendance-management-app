@@ -182,7 +182,9 @@ class AttendanceController extends Controller
 
         return redirect()->route('attendance.index')->with('success', '勤怠データが保存されました。');
         */
-    }    /**
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(string $id)
