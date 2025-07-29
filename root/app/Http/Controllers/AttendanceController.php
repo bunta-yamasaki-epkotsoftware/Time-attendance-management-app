@@ -83,6 +83,16 @@ class AttendanceController extends Controller
         // return redirect()->route('dashboard')->with('success', '退勤が登録されました。');
         $attendance->clock_out = Carbon::now()->format('H:i');
         $attendance->notes_out = $request->input('notes_out', ''); // メモがあれば保存
+
+        // 総労働時間を計算して保存
+        if ($attendance->clock_in && $attendance->clock_out) {
+            $in = \Carbon\Carbon::parse($attendance->clock_in);
+            $out = \Carbon\Carbon::parse($attendance->clock_out);
+            $minutes = abs($out->diffInMinutes($in));
+            $attendance->total_work_hours = round($minutes / 60, 2);
+        }
+        // Log::debug('clockOut: 総労働時間を計算', ['total_work_hours' => $attendance->total_work_hours]);
+
         $attendance->save();
         // Log::debug('clockOut: 退勤登録完了', ['attendance' => $attendance]);
 
@@ -136,7 +146,7 @@ class AttendanceController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -144,44 +154,7 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
-        // デバッグ用: リクエストメソッドとデータを確認
-        dd([
-            'method' => $request->method(),
-            'all_data' => $request->all(),
-            'has_type' => $request->has('type'),
-            'type_value' => $request->input('type'),
-            'current_date' => $request->input('current_date'),
-            'current_time' => $request->input('current_time'),
-            'test_memo_value' => $request->input('test_memo'),
-            'javascript_datetime' => [
-                'date_field' => $request->input('current_date'),
-                'time_field' => $request->input('current_time'),
-                'memo_field' => $request->input('test_memo')
-            ]
-        ]);
-
-        /*
-        $request->validate([
-            'work_date' => 'required|date',
-            'clock_in' => 'required|date_format:H:i',
-            'clock_out' => 'nullable|date_format:H:i',
-            'break_start' => 'nullable|date_format:H:i',
-            'break_end' => 'nullable|date_format:H:i',
-            'notes' => 'nullable|string|max:255',
-        ]);
-
-        Attendance::create([
-            'user_id' => auth()->id(),
-            'work_date' => $request->work_date,
-            'clock_in' => $request->clock_in,
-            'clock_out' => $request->clock_out,
-            'break_start' => $request->break_start,
-            'break_end' => $request->break_end,
-            'notes' => $request->notes,
-        ]);
-
-        return redirect()->route('attendance.index')->with('success', '勤怠データが保存されました。');
-        */
+        //
     }
 
     /**

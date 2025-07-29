@@ -26,6 +26,7 @@ class Attendance extends Model
         'location_lng',
         'notes_in',
         'notes_out',
+        'total_work_hours',
     ];
 
     /**

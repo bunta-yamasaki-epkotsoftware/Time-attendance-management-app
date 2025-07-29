@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Attendance; // Assuming you have an Attendance model
 use Carbon\Carbon; // For date and time handling
 use Carbon\CarbonPeriod; // For generating date ranges
+use Illuminate\Support\Facades\Log;
 
 class WorkScheduleController extends Controller
 {
@@ -115,23 +116,50 @@ class WorkScheduleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // dd($request->all());
+        // dd('バリデーション前',$request->all());
 
         // バリデーション
-        $request->validate([
-            'clock_in' => 'required|date_format:H:i',
-            'clock_out' => 'nullable|date_format:H:i',
-            'break_start' => 'nullable|date_format:H:i',
-            'break_end' => 'nullable|date_format:H:i',
-            'notes_in' => 'nullable|string|max:255',
-            'notes_out' => 'nullable|string|max:255',
-        ]);
+        try {
+            $request->validate([
+                'clock_in' => 'required|date_format:H:i',
+                'clock_out' => 'nullable|date_format:H:i',
+                'break_start' => 'nullable|date_format:H:i',
+                'break_end' => 'nullable|date_format:H:i',
+                'notes_in' => 'nullable|string|max:255',
+                'notes_out' => 'nullable|string|max:255',
+                'total_work_hours' => 'nullable|numeric',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            dd($e->errors()); // どの項目でエラーか配列で表示される
+        }
+
+        // バリデーション後
+        // dd('バリデーション通過', $request->all());
 
         // 認証ユーザーの権限を確認
         $attendance = Attendance::findOrFail($id);
 
+        $data = $request->only([
+            'clock_in',
+            'clock_out',
+            'break_start',
+            'break_end',
+            'notes_in',
+            'notes_out',
+            'total_work_hours',
+        ]);
+
+        // 総労働時間を計算して保存
+        if ($request->clock_in && $request->clock_out) {
+            $in = \Carbon\Carbon::parse($request->clock_in);
+            $out = \Carbon\Carbon::parse($request->clock_out);
+            $minutes = abs($out->diffInMinutes($in));
+            $data['total_work_hours'] = round($minutes / 60, 2);
+        }
+        Log::debug('clockOut: 総労働時間を計算', ['total_work_hours' => $data['total_work_hours']]);
+
         //updateメソッドでの更新
-        $attendance->update($request->all());
+        $attendance->update($data);
 
         return redirect()->route('workschedules.index', compact('attendance'))->with('success', '勤務表が更新されました。');
     }
