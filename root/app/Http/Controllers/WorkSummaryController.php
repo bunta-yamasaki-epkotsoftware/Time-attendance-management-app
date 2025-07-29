@@ -41,10 +41,63 @@ class WorkSummaryController extends Controller
         //平日の取得
         $workdays = count($dates) - count($saturdaysAndSundays);
 
+        //平日出勤日数
+        $workingdays = Attendance::where('user_id', Auth::id())
+            ->whereBetween('work_date', [$start->format('Y-m-d'), $end->format('Y-m-d')])
+            ->whereNotIn('work_date', $saturdaysAndSundays)
+            ->count();
+
+        //休日出勤日数
+        $holidayWorkdays = Attendance::where('user_id', Auth::id())
+            ->whereBetween('work_date', [$start->format('Y-m-d'), $end->format('Y-m-d')])
+            ->whereIn('work_date', $saturdaysAndSundays)
+            ->count();
+
+        //休日出勤時間
+        $holidayWorkHours = Attendance::where('user_id', Auth::id())
+            ->whereBetween('work_date', [$start->format('Y-m-d'), $end->format('Y-m-d')])
+            ->whereIn('work_date', $saturdaysAndSundays)
+            ->sum('total_work_hours');
+
+        //欠勤日
+        $absentdays = count($dates) - ($workingdays + $holidayWorkdays);
+
+        //合計労働時間
+        $totalWorkHours = Attendance::where('user_id', Auth::id())
+            ->whereBetween('work_date', [$start->format('Y-m-d'), $end->format('Y-m-d')])
+            ->sum('total_work_hours');
+
+        $hours = floor($totalWorkHours);
+        $minutes = str_pad(round($totalWorkHours - $hours), 2, '0', STR_PAD_LEFT);
+
+        // //時間外労働時間・深夜労働時間の計算
+        $afterWorkHours = 0;
+        $nightWorkHours = 0;
+        $attendances = Attendance::where('user_id', Auth::id())
+            ->whereBetween('work_date', [$start->format('Y-m-d'), $end->format('Y-m-d')])
+            ->get();
+
+        foreach ($attendances as $attendance) {
+            if ($attendance->clock_out > '18:30') {
+                $clockOut = Carbon::parse($attendance->clock_out);
+                $afterStart = Carbon::parse('18:30');
+                // 退勤が18:30より後なら、その差分だけ加算
+                $afterMinutes = abs($clockOut->diffInMinutes($afterStart));
+                $afterWorkHours += $afterMinutes / 60;
+            }
+            if($attendance->clock_out > '22:00') {
+                $clockOut = Carbon::parse($attendance->clock_out);
+                $nightStart = Carbon::parse('22:00');
+                // 退勤が22:00より後なら、その差分だけ加算
+                $nightMinutes = abs($clockOut->diffInMinutes($nightStart));
+                $nightWorkHours += $nightMinutes / 60;
+            }
+        }
+
         $attendances = Attendance::all();
 
         $weekdays = ['日', '月', '火', '水', '木', '金', '土'];
 
-        return view('worksummarys.index', compact('attendances', 'weekdays', 'dates', 'year', 'month', 'workdays')); // worksummary/index.blade.phpを表示
+        return view('worksummarys.index', compact('attendances', 'weekdays', 'dates', 'year', 'month', 'workdays','workingdays','holidayWorkdays','absentdays','totalWorkHours', 'hours', 'minutes','afterWorkHours','nightWorkHours','holidayWorkHours')); // worksummary/index.blade.phpを表示
     }
 }

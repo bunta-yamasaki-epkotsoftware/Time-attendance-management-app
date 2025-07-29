@@ -12,6 +12,27 @@
     </div>
 </div>
 
+<!-- //エラーメッセージ・成功メッセージ -->
+    @if(session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" id="error-message" role="alert">
+            <strong class="font-bold">エラー:</strong>
+            <span class="block sm:inline">{{ session('error') }}</span>
+            <!-- ×ボタンを追加 -->
+            <button type="submit" class="absolute top-0 right-0 px-4 py-3" onclick="closeMessage('error-message')">
+                ×
+            </button>
+        </div>
+    @elseif(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" id="success-message" role="alert">
+            <strong class="font-bold">成功:</strong>
+            <span class="block sm:inline">{{ session('success') }}</span>
+            <!-- ×ボタンを追加 -->
+            <button type="button" class="absolute top-0 right-0 px-4 py-3" onclick="closeMessage('success-message')">
+                ×
+            </button>
+        </div>
+    @endif
+
 
     <!-- 打刻ログの表示 -->
     <div class="mx-auto"> <!-- //max-w-4xl -->
