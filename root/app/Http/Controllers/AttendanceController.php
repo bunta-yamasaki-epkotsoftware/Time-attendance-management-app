@@ -73,14 +73,6 @@ class AttendanceController extends Controller
             return redirect()->route('dashboard')->with('error', '今日の退勤はすでに登録されています。');
         }
 
-        //出勤登録
-        // $attendance = new Attendance();
-        // $attendance->user_id = Auth::id();
-        // $now = Carbon::now();
-        // $attendance->work_date = $now->format('Y-m-d');
-        // $attendance->clock_out = $now->format('Y-m-d H:i:s');
-        // $attendance->save();
-        // return redirect()->route('dashboard')->with('success', '退勤が登録されました。');
         $attendance->clock_out = Carbon::now()->format('H:i');
         $attendance->notes_out = $request->input('notes_out', ''); // メモがあれば保存
 
