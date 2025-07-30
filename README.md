@@ -75,30 +75,6 @@ php artisan migrate:fresh --seed
   → `routes/web.php`の`'/'`の実行結果（`welcome.blade.php`）が表示されます。
 - phpMyAdmin: [http://127.0.0.1:8888/](http://127.0.0.1:8888/)
 
----
-
-## 開発・運用Tips
-
-### PHP_CodeSniffer
-
-コミット・プッシュ前にPHP_CodeSnifferでコーディング規約違反がないかチェックしてください。
-
-```sh
-composer sniffer ./
-# 単一ファイルチェック例
-composer sniffer ./app/Http/Controllers/AdminLoginController.php
-```
-
-### PHPUnit
-
-```sh
-php artisan test
-# 単一ファイルテスト例
-php artisan test --filter AdminLoginTest
-```
-
----
-
 ## 補足
 
 - VSCodeの[Docker拡張機能](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)を使うと、コンテナの「Open in Browser」からWebやphpMyAdminに簡単にアクセスできます。
