@@ -14,17 +14,15 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
-
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+    <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex items-center lg:justify-center flex-col w-full">
+        <header class="bg-[#62b89d] w-full text-sm mb-6 not-has-[nav]:hidden text-center">
+            <h1 class="text-2xl font-semibold mb-2 mt-2">ログイン画面</h1>
+        </header>
+        <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
-            </div>
         </div>
+        <footer class="bg-[#62b89d] w-full text-sm mt-6 not-has-[nav]:hidden text-center">
+            <h1 class="text-2xl font-semibold mb-1">xxxxxxxxxxx</h1>
+        </footer>
     </body>
 </html>

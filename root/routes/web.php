@@ -9,7 +9,7 @@ use App\Http\Controllers\WorkSummaryController; // Import WorkSummaryController
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 // 勤怠ダッシュボードのルート
 Route::get('/dashboard', [AttendanceController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -36,8 +36,5 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-// 勤怠管理のルート（dashboardと統合したので削除or別用途に使用）
-// Route::get('/attendance', [AttendanceController::class, 'index'])->middleware(['auth', 'verified'])->name('attendance.index');
 
 require __DIR__.'/auth.php';
