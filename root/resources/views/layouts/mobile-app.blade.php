@@ -23,13 +23,11 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-white">
 
             <!-- Page Content -->
             <main class="pb-20">
                 @yield('content')
             </main>
-        </div>
 
         <!-- Service Worker登録 -->
         <script>

@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- タイトル -->
-    <div class="bg-gradient-to-b from-green-400 to-green-500 py-8">
+    <div class="bg-[#62b89d] py-8">
         <div class="flex justify-center">
             <div class="text-center">
                 <h1 class="text-4xl font-bold text-white">打刻編集</h1>

@@ -2,8 +2,8 @@
 
 @section('content')
     <!-- 月切り替えナビゲーション -->
-<div class="bg-gradient-to-b from-green-400 to-green-500 py-8">
-    <div class="flex justify-between mb-4">
+<div class="bg-[#62b89d] py-4">
+    <div class="flex justify-between">
         <a href="{{ route('workschedules.index', ['year' => $year, 'month' => $month - 1]) }}"
         class="text-white text-4xl pl-10">&lt;</a>
         <span class="font-bold text-4xl text-white">{{ $year }}年{{ $month }}月</span>
