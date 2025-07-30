@@ -16,7 +16,7 @@
     </head>
     <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex items-center lg:justify-center flex-col w-full">
         <header class="bg-[#62b89d] w-full text-sm mb-6 not-has-[nav]:hidden text-center">
-            <h1 class="text-2xl font-semibold mb-2 mt-2">ログイン画面</h1>
+            <h1 class="text-2xl font-semibold mb-2 mt-2">ログイン・登録画面</h1>
         </header>
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
